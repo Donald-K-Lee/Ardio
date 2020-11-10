@@ -15,7 +15,7 @@ pip install bs4
 
 # Libraries/Modules used:
 
-## Terms of Service 
+# Terms of Service 
 This program has not been thoroughly tested on other devices. 
 </br>By using this program, you will be held accountable for anything that this program has potentially caused. 
 </br> These terms may be changed without notice.
