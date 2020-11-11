@@ -1,129 +1,62 @@
 """
-Refer to https://towardsdatascience.com/easy-text-to-speech-with-python-bfb34250036e
+By: Donald Lee
+
+
+Refer to 
+https://repl.it/talk/learn/Flask-Tutorial-Part-1-the-basics/26272
+https://www.youtube.com/watch?v=Z1RJmh_OqeA
 """
-from gtts import gTTS
-import os
-import requests
-from bs4 import BeautifulSoup
-import random
-
-def main():
-  text_file = open("article.txt", "w")
-
-  URL = input("Please enter in an article from CTV: ")
-
-  page = requests.get(URL)
-
-  soup = BeautifulSoup(page.content, 'html.parser')
-
-  article_title = soup.select('h1.articleHeadline')[0].text.strip()
 
 
-  paragraphs = soup.find_all('p')
+import article_to_audio
+from flask import Flask, render_template, url_for, request
+import random, string, concurrent.futures, os
 
-  divs = soup.find_all('div')
+app = Flask(  # Create a flask app
+	__name__,
+	template_folder='templates',  # Name of html file folder
+	static_folder='static'  # Name of directory for static files
+)
 
-  reccomended_articles = []
+#Prevents cache from using the old css file, makes it use the updated one
+@app.context_processor
+def override_url_for():
+    return dict(url_for=dated_url_for)
 
-  def filter_text():
-    for reccomended_article in unfiltered_reccomended_articles:
-      if len(reccomended_article) > 0:
-        reccomended_articles.append(reccomended_article.strip(" "))
+def dated_url_for(endpoint, **values):
+    if endpoint == 'static':
+        filename = values.get('filename', None)
+        if filename:
+            file_path = os.path.join(app.root_path,
+                                 endpoint, filename)
+            values['q'] = int(os.stat(file_path).st_mtime)
+    return url_for(endpoint, **values)
+# ^ ^ ^
 
-  for div in divs:
+@app.route('/')  # '/' for the default page
+def base_page():
+  return render_template('base.html', audio_file_name = "", Wait="", audio_visibility = "none", loading_status = "none")
+
+@app.route('/', methods=['POST'])
+def my_form_post():
     try:
-      if div.has_attr('class') and div['class'][0] == "sideItems":
-          unfiltered_reccomended_articles = div.text.strip("\n ").split("\n")
-          filter_text()
+      text = request.form['article_link']
+      name_of_file = article_to_audio.main(text)
 
-      elif div.has_attr('class') and div['class'][0] == "content-secondary":
-        unfiltered_reccomended_articles = div.text.strip("\n ").split("\n")
-        filter_text()
-
+      with concurrent.futures.ThreadPoolExecutor() as executor:
+        name_of_file = executor.submit(article_to_audio.main, text).result()
+        print(name_of_file)
+        
+      return render_template('base.html', audio_file_name = str(name_of_file), Wait="Your article has been converted into mp3!", audio_visibility = "block", loading_status = "none")
+      
     except:
-      pass
+      return render_template('base.html', audio_file_name = "", Wait="", audio_visibility = "none", loading_status = "none")
+   
 
-  footers = soup.find_all('footer')
-
-  for footer in footers:
-    footer_text = footer.text.strip("\n ").split("\n")
-
-  a_links = soup.find_all('a')
-
-  for link in a_links:
-      if link.has_attr('class') and link['class'][0] == "bioLink":
-          author = link.text
-
-  print("\n\n\n")
-
-  text_file.write(article_title + " \n\nThis article is by: " + author + "\n\n")
-
-  text_file.close()
-
-  text_file = open("article.txt", "a")
-
-  print("\n\n\n")
-
-
-  article = []
-
-  #For p and a
-  excluded_classes = ["title", "ad-below", "bioLink", "back-top", "newWindow", "socialBio"]
-
-
-  for paragraph in paragraphs:
-      a_test = paragraph.find("a")
-      if paragraph.text.strip("\n ") in reccomended_articles:
-        pass
-
-      elif paragraph.text in footer_text:
-        pass
-
-      elif a_test != None:
-
-          if a_test.has_attr('class') and a_test['class'][0] in excluded_classes:
-              pass
-          else:
-              article.append(paragraph.text)
-
-      elif paragraph.has_attr('class') and paragraph['class'][0] in excluded_classes:
-          pass
-
-      elif "SHARE" in paragraph.text:
-          pass
-
-      else:
-          article.append(paragraph.text)
-
-  for line in article:
-      text_file.write(line)
-
-  text_file.close()
-
-
-  entire_article = open("article.txt", "r").read()
-
-  language = 'en-ca'
-
-  print("Converting text into audio...")
-
-  speech = gTTS(text = entire_article, lang = language, slow = False)
-
-  print("\nSaving text as an audio file...")
-
-  audio_file_name = random.randint(1111111,9999999)
-
-  saved = False
-  while saved == False:
-      try:
-          speech.save(str(audio_file_name) + ".mp3")
-          saved = True
-      except:
-          pass
-
-  print("\nThe text has been saved as an audio file called " + str(audio_file_name) + ".mp3")
-
-  print("\nOpening audio file...")
-  os.system("start " + str(audio_file_name) + ".mp3")
-
-main()
+if __name__ == "__main__":  # Makes sure this is the main process
+	app.run( 
+    debug=True,
+    # Starts the site
+		host='0.0.0.0',  # EStablishes the host, required for repl to detect the site
+		port=random.randint(2000, 9000)  # Randomly select the port the machine hosts on.
+	)
