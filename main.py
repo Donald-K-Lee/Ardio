@@ -39,12 +39,11 @@ def base_page():
 
 @app.route('/', methods=['POST'])
 def my_form_post():
+    audio_file_name = random.randint(1111111,9999999)
     try:
       text = request.form['article_link']
-      name_of_file = article_to_audio.main(text)
-
       with concurrent.futures.ThreadPoolExecutor() as executor:
-        name_of_file = executor.submit(article_to_audio.main, text).result()
+        name_of_file = executor.submit(article_to_audio.main, text, audio_file_name).result()
         print(name_of_file)
         
       return render_template('base.html', audio_file_name = str(name_of_file), Wait="Your article has been converted into mp3!", audio_visibility = "block", loading_status = "none")
