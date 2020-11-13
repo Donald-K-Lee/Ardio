@@ -7,9 +7,8 @@ import requests
 from bs4 import BeautifulSoup
 import random 
 
-def main(URL):
-  audio_file_name = random.randint(1111111,9999999)
-  
+
+def main(URL, audio_file_name):
   text_file_name = "static/articles/" + str(audio_file_name) + ".txt"
   text_file = open(text_file_name, "w")
 
@@ -106,7 +105,6 @@ def main(URL):
       text_file.write(line)
 
   text_file.close()
-
 
   entire_article = open(text_file_name, "r").read()
 
