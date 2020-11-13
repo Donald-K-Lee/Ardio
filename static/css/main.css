@@ -1,5 +1,6 @@
 body {
   background: #F9F9F9;
+  background: #FFFFFF;
   margin: 0;
   overflow-x:hidden;
   height:100%;
@@ -11,37 +12,58 @@ body {
 header {
   width:100%;
   background: #1F44C2;
-  height:80px;
+  height:60px;
+  padding:10px;
+}
+
+.header_logo {
+  position:relative;
+  display:inline;
+  left:20px;
+  width:60px;
+  height:auto;
+  float:left;
 }
 
 .Ardio_text {
   position:relative;
-  font-size:30px;
-  left:20px;
-  line-height:80px;
+  display:inline;
+  font-size:35px;
+  left:30px;
+  line-height:60px;
 }
-.header_link {
+.hyperlink {
   text-decoration:none;
   color:white;
 }
 
+.container {
+  display: block;
+  margin:0 auto;
+  position:relative;
+  text-align:center;
+}
 .welcome {
   position:relative;
-  left:20px;
+  width:95%;
+  margin:0 auto;
+  font-size:30px;
+  padding-top:50px;
+  padding-bottom:50px;
 }
 
 form {
-  text-align:center;
+  text-align:left;
+  display: inline-block;
 }
 
 .text_field_title {
   position:relative;
   font-size:30px;
-  right:75px;
   font-weight:bold;
 }
 .link_box_form {
-  width:350px;
+  width:50vw;
   height:50px;
   margin-top:15px;
 }
@@ -60,9 +82,7 @@ form {
   border:none;
   cursor:pointer;
   transition: 0.5s;
-
   margin-top:15px;
-  right:25px;
 }
 .link_summit_button:hover {
   transition: 0.5s;
@@ -74,7 +94,6 @@ form {
 }
 
 audio {
-  filter: sepia(20%) saturate(70%) grayscale(1) contrast(99%) invert(12%);
   width: 310px;
 }
 
@@ -90,7 +109,14 @@ footer {
 .credits {
   position: relative;
   margin-left:10px;
-  font-size:20px;
+  font-size:17px;
   color:white;
-  top: 55%;
+  top: 65%;
+}
+
+/*When the device's screen is below 1000px, make the URL box longer*/
+@media only screen and (max-width: 1000px) {
+  .link_box_form {
+    width:90vw;
+  }
 }
