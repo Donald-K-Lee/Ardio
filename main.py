@@ -11,6 +11,7 @@ https://www.youtube.com/watch?v=Z1RJmh_OqeA
 import article_to_audio
 from flask import Flask, render_template, url_for, request
 import random, string, concurrent.futures, os
+from requests.exceptions import MissingSchema
 
 app = Flask(  # Create a flask app
 	__name__,
@@ -35,7 +36,7 @@ def dated_url_for(endpoint, **values):
 
 @app.route('/')  # '/' for the default page
 def base_page():
-  return render_template('base.html', audio_file_name = "", Wait="", audio_visibility = "none", loading_status = "none")
+  return render_template('base.html', audio_file_name = "", audio_visibility = "none", loading_status = "none", invalid_url_state="none")
 
 @app.route('/', methods=['POST'])
 def my_form_post():
@@ -46,10 +47,11 @@ def my_form_post():
         name_of_file = executor.submit(article_to_audio.main, text, audio_file_name).result()
         print(name_of_file)
         
-      return render_template('base.html', audio_file_name = str(name_of_file), Wait="Your article has been converted into mp3!", audio_visibility = "block", loading_status = "none")
+      return render_template('base.html', audio_file_name = str(name_of_file), audio_visibility = "block", loading_status = "none", invalid_url_state="none")
       
-    except:
-      return render_template('base.html', audio_file_name = "", Wait="", audio_visibility = "none", loading_status = "none")
+    #If the text the user enters is not a valid URL
+    except MissingSchema:
+      return render_template('base.html', audio_file_name = "", audio_visibility = "none", loading_status = "none", invalid_url_state="block")
    
 
 if __name__ == "__main__":  # Makes sure this is the main process

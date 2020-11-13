@@ -13,29 +13,30 @@
   <!--Icon of the website-->
 	<link rel="icon" href="static/images/ardio_logo.png" type="image/png"/>
 
+  <!--Meta description of the website-->
+  <meta name="description" content="Ardio is a web application that converts CTV news articles into mp3 files. Listen them here or download them for the go!"/>
+
   {% block head %}
 
   <style>
     .audio_player {
       display: {{audio_visibility}};
     }
-    #loading_circle {
-      position: relative;
-      top:20px;
-      border: 16px solid #f3f3f3;
-      border-radius: 50%;
-      border-top: 16px solid #3498db;
-      width: 160px;
-      height: 160px;
-      animation: loading_animation 2s linear infinite;
-      margin:0 auto;
-      margin-bottom:50px;
+    #appears_on_load {
       display: {{loading_status}};
     }
-    @keyframes loading_animation {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+
+  .invalid_url_container {
+    background: #E57373;
+    padding-top:10px;
+    padding-bottom:20px;
+    width:50vw;
+    height:auto;
+    margin:0 auto;
+    border-radius:5px;
+
+    display: {{invalid_url_state}};
+  }
 
   </style>
 
@@ -55,7 +56,7 @@
   </header>
 
   <div class="container">
-    <h1 class="welcome">Welcome to Ardio! We convert your CTV articles into audio!</h1>
+    <h1 class="welcome">Welcome to Ardio! We convert your <a class="visible_link" href="https://www.ctvnews.ca/" target="_blank">CTV</a> articles into audio!</h1>
     <form method="POST">
       <label for="article_link" class="text_field_title">Link to article:</label><br>
       <input class="link_box_form" type="text" id="article_link" name="article_link" placeholder="Example: https://www.ctvnews.ca/world/example-article">
@@ -64,16 +65,28 @@
       <input id="submit_link" class="link_summit_button" type="submit" value="Convert to audio - It's free!" onclick="showloading()"/>
     </form>
 
-    <h1 class="welcome">{{Wait}}</h1>
+    <div class="invalid_url_container">
+      <p class="invalid_url_heading">Oh no! The link that you entered is invalid!</p>
+      <ui class="invalid_url_list">
+        <li>Ensure that the link you entered is from <a class="visible_link" href="https://www.ctvnews.ca/" target="_blank">CTV News</a>.</li>
+        <li>Ensure that you did not leave the field blank when attempting to convert an article.</li>
+      </ui>
+    </div>
 
-    <div id="loading_circle"></div>
+    <div id="appears_on_load">
+      <p class="welcome">Please be patient while we convert your article into audio. This can take up to a few minutes!</p>
+      <div class="loading_circle"></div>
 
-    <audio controls class="audio_player" class="audio_player">
-      <!--<source src="static/audio/" + {{audio_file_name}} + ".mp3" type="audio/mpeg">-->
-      <source src="{{ url_for('static', filename='audio/' + audio_file_name + '.mp3') }}" type="audio/mpeg">
-      Sorry, your browser does not support the audio element.
-    </audio>
+    </div>
 
+    <div class="audio_player" id="converted_audio">
+        <h1 id="converted_audio" class="welcome audio_player">Your article has been converted into mp3!</h1>
+
+        <audio controls class="audio_player" id="converted_audio">
+          <source src="{{ url_for('static', filename='audio/' + audio_file_name + '.mp3') }}" type="audio/mpeg">
+          Sorry, your browser does not support the audio element.
+        </audio>
+    </div>
   </div>
   <footer>
     <p class="credits">@ 2020 <a class="hyperlink" href="https://github.com/DonaldKLee" target="_blank">Donald Lee</a></p>
@@ -84,7 +97,9 @@
     //If the user presses enter when on the form
     var link_enter = document.getElementById("article_link");
     //Show the loading circle
-    var loader = document.getElementById("loading_circle");
+    var loader = document.getElementById("appears_on_load");
+    //The text and audio player that shows up
+    var converted_audio_items = document.getElementById("converted_audio");
 
     link_enter.addEventListener("keyup", function(event) {
       if (event.keyCode === 13) {
@@ -95,6 +110,7 @@
 
     function showloading() {
         loader.style.display = "block";
+        converted_audio_items.style.display = "none";
     }
 </script>
 
