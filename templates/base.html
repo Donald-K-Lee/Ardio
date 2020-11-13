@@ -6,53 +6,61 @@
   <!--Links static/css/main.css to the HTML file-->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
+
+  <!--SEO-->
+  <!--Website title-->
+	<title>Ardio - Convert your Articles into Audio</title>
+  <!--Icon of the website-->
+	<link rel="icon" href="static/images/ardio_logo.png" type="image/png"/>
+
   {% block head %}
 
   <style>
-
-
-  .audio_player {
-    display: {{audio_visibility}};
-  }
-
-#loading_circle {
-  position: relative;
-  top:30px;
-
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid #3498db;
-  width: 120px;
-  height: 120px;
-  animation: spin 2s linear infinite;
-  margin:0 auto;
-  margin-bottom:50px;
-
-  display: {{loading_status}};
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+    .audio_player {
+      display: {{audio_visibility}};
+    }
+    #loading_circle {
+      position: relative;
+      top:20px;
+      border: 16px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 16px solid #3498db;
+      width: 160px;
+      height: 160px;
+      animation: loading_animation 2s linear infinite;
+      margin:0 auto;
+      margin-bottom:50px;
+      display: {{loading_status}};
+    }
+    @keyframes loading_animation {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
   </style>
 
   {% endblock %}
+
 </head>
 
 <body>
   {% block body %}
   
   <header>
-    <p class="Ardio_text"><a class="header_link" href="https://cp11-assignment-70.donaldklee.repl.co/">Ardio</a></p>
+    <a class="hyperlink" href="https://cp11-assignment-70.donaldklee.repl.co/">
+      <img class="header_logo" src="static/images/ardio_logo.png" alt="Ardio Logo">
+    </a>
+
+    <p class="Ardio_text"><a class="hyperlink" href="https://cp11-assignment-70.donaldklee.repl.co/">Ardio</a></p>
   </header>
 
   <div class="container">
-    <h1 class="welcome">Hi, there! Welcome to Ardio!</h1>
+    <h1 class="welcome">Welcome to Ardio! We convert your CTV articles into audio!</h1>
     <form method="POST">
       <label for="article_link" class="text_field_title">Link to article:</label><br>
-      <input class="link_box_form" type="text" id="article_link" name="article_link" placeholder="Example: https://www.ctvnews.ca/world/example-article"><br>
+      <input class="link_box_form" type="text" id="article_link" name="article_link" placeholder="Example: https://www.ctvnews.ca/world/example-article">
+      <br>
+      
       <input id="submit_link" class="link_summit_button" type="submit" value="Convert to audio - It's free!" onclick="showloading()"/>
     </form>
 
@@ -68,7 +76,7 @@
 
   </div>
   <footer>
-    <p class="credits">@ 2020 Donald Lee</p>
+    <p class="credits">@ 2020 <a class="hyperlink" href="https://github.com/DonaldKLee" target="_blank">Donald Lee</a></p>
   </footer>
   {% endblock %}
 
