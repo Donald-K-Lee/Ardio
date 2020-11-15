@@ -1,19 +1,13 @@
 """
 Refer to https://towardsdatascience.com/easy-text-to-speech-with-python-bfb34250036e
 """
+
+import os, requests, random 
 from gtts import gTTS
-import os
-import requests
 from bs4 import BeautifulSoup
-import random 
 
-
+#A function that converts the article into an mp3 file
 def main(URL, audio_file_name):
-  text_file_name = "static/articles/" + str(audio_file_name) + ".txt"
-  text_file = open(text_file_name, "w")
-
-  #URL = 'https://www.ctvnews.ca/world/trump-fires-u-s-secretary-of-defense-mark-esper-1.5181146'
-
   page = requests.get(URL)
 
   soup = BeautifulSoup(page.content, 'html.parser')
@@ -59,22 +53,16 @@ def main(URL, audio_file_name):
   for link in a_links:
       if link.has_attr('class') and link['class'][0] == "bioLink":
           author = link.text
-
-  print("\n\n\n")
-
-  text_file.write(article_title + " \n\nThis article is by: " + author + "\n\n")
-
-  text_file.close()
-
-  text_file = open(text_file_name, "a")
-
-  print("\n\n\n")
-
+  
+  spans = soup.find_all('span')
+  for span in spans:
+    if span.has_attr('class') and span['class'][0] == "bold":
+      author = span.text
 
   article = []
 
   #For p and a
-  excluded_classes = ["title", "ad-below", "bioLink", "back-top", "newWindow", "socialBio", "contactBio"]
+  excluded_classes = ["title", "ad-below", "bioLink", "back-top", "newWindow", "socialBio", "contactBio", "socialShareLabel"]
 
 
   for paragraph in paragraphs:
@@ -101,18 +89,14 @@ def main(URL, audio_file_name):
       else:
           article.append(paragraph.text)
 
-  for line in article:
-      text_file.write(line)
+  the_article = article_title + " \n\nThis article is by: " + author + "\n\n" + '\n'.join(article)
 
-  text_file.close()
-
-  entire_article = open(text_file_name, "r").read()
-
+  #Sets the language and accent of the voice reading the mp3 file
   language = 'en-ca'
 
   print("Converting text into audio...")
-
-  speech = gTTS(text = entire_article, lang = language, slow = False)
+  
+  speech = gTTS(text = the_article, lang = language, slow = False)
 
   print("\nSaving text as an audio file...")
 
@@ -127,10 +111,7 @@ def main(URL, audio_file_name):
       except:
           pass
 
-
   print("\nThe text has been saved as an audio file called " + str(audio_file_name) + ".mp3")
 
-  #print("\nOpening audio file...")
-  #os.system("start " + str(audio_file_name) + ".mp3")
   return str(audio_file_name)
 
