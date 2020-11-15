@@ -48,7 +48,7 @@ header {
   position:relative;
   width:95%;
   margin:0 auto;
-  font-size:30px;
+  font-size:35px;
   padding-top:50px;
   padding-bottom:50px;
 }
@@ -159,7 +159,7 @@ footer {
   .link_box_form {
     width:90vw;
   }
-  .invalid_url {
-  width:90vw;
+  .invalid_url_container {
+    width:90vw;
   }
 }

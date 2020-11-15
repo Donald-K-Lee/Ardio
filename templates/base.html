@@ -1,11 +1,33 @@
 <!DOCTYPE>
 <html>
 <head>
+
+    {% block head %}
+    
+    <style>
+      .audio_player {
+        display: {{audio_visibility}};
+      }
+      #appears_on_load {
+        display: {{loading_status}};
+      }
+
+    .invalid_url_container {
+      background: #E57373;
+      padding-top:10px;
+      padding-bottom:20px;
+      width:50vw;
+      height:auto;
+      margin:0 auto;
+      border-radius:5px;
+
+      display: {{invalid_url_state}};
+    }
+  </style>
   <!--Makes the website mobile responsive-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <!--Links static/css/main.css to the HTML file-->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-
 
   <!--SEO-->
   <!--Website title-->
@@ -16,29 +38,6 @@
   <!--Meta description of the website-->
   <meta name="description" content="Ardio is a web application that converts CTV news articles into mp3 files. Listen them here or download them for the go!"/>
 
-  {% block head %}
-
-  <style>
-    .audio_player {
-      display: {{audio_visibility}};
-    }
-    #appears_on_load {
-      display: {{loading_status}};
-    }
-
-  .invalid_url_container {
-    background: #E57373;
-    padding-top:10px;
-    padding-bottom:20px;
-    width:50vw;
-    height:auto;
-    margin:0 auto;
-    border-radius:5px;
-
-    display: {{invalid_url_state}};
-  }
-
-  </style>
 
   {% endblock %}
 
