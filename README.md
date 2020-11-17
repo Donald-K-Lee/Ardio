@@ -2,7 +2,9 @@
 Ardio is a web application that converts CTV News articles into mp3 files. Currently, this only works for CTV, but in the future, I am planning on expanding it to more news soruces such as Global News or CNN. 
 
 # Demo
-A link to try out this web app will be released before December 1st. Stay tuned! 
+A link to try out this web app will be released before December 1st. Stay tuned!
+ 
+<img width="1000vw" height="auto" src="https://raw.githubusercontent.com/DonaldKLee/Ardio/main/Ardio_Demo.gif">
 
 # Installation
 1. Download the code from this repository GitHub
