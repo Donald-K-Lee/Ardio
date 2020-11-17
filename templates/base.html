@@ -5,39 +5,45 @@
     {% block head %}
     
     <style>
+      /*CSS code that can be altered with Flask*/
       .audio_player {
-        display: {{audio_visibility}};
+        display: {{audio_visibility}}; /*Displays after an article is converted into audio*/
       }
       #appears_on_load {
-        display: {{loading_status}};
+        display: {{loading_status}}; /*Displays when an article is being converted*/
       }
 
     .invalid_url_container {
-      background: #E57373;
-      padding-top:10px;
+      background: #E57373; /*Background colour of the error box*/
+      /*Adds some padding to the top and bottom of the box*/
+      padding-top:10px; 
       padding-bottom:20px;
-      width:50vw;
-      height:auto;
-      margin:0 auto;
-      border-radius:5px;
+      width:50vw; /*Width of box is 50% of the view width*/
+      height:auto; 
+      margin:0 auto; /*Centers the box*/
+      border-radius:5px; /*Slightly round the corners of the box*/
 
-      display: {{invalid_url_state}};
+      display: {{invalid_url_state}}; /*Only displays when an error occurs in the Python code*/
     }
+
   </style>
+
   <!--Makes the website mobile responsive-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
   <!--Links static/css/main.css to the HTML file-->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 
-  <!--SEO-->
+  <!--SEO purposes-->
   <!--Website title-->
 	<title>Ardio - Convert your Articles into Audio</title>
   <!--Icon of the website-->
 	<link rel="icon" href="static/images/ardio_logo.png" type="image/png"/>
 
   <!--Meta description of the website-->
-  <meta name="description" content="Ardio is a web application that converts CTV news articles into mp3 files. Listen them here or download them for the go!"/>
+  <meta name="description" content="Ardio is a web application that converts CTV news articles into mp3 files. Listen to them here or download them for the go!"/>
 
+  <!--^ ^ ^-->
 
   {% endblock %}
 
@@ -47,68 +53,93 @@
   {% block body %}
   
   <header>
+    <!--Adds a hyperlinked logo to the header-->
     <a class="hyperlink" href="https://cp11-assignment-70.donaldklee.repl.co/">
       <img class="header_logo" src="static/images/ardio_logo.png" alt="Ardio Logo">
     </a>
-
+    <!--Adds the name of the website to the header and hyperlink it-->
     <p class="Ardio_text"><a class="hyperlink" href="https://cp11-assignment-70.donaldklee.repl.co/">Ardio</a></p>
   </header>
 
   <div class="container">
+
     <h1 class="welcome">Welcome to Ardio! We convert your <a class="visible_link" href="https://www.ctvnews.ca/" target="_blank">CTV</a> articles into audio!</h1>
+
+    <!--The form-->
     <form method="POST">
+      <!--Text box title-->
       <label for="article_link" class="text_field_title">Link to article:</label><br>
+      <!--Text box-->
       <input class="link_box_form" type="text" id="article_link" name="article_link" placeholder="Example: https://www.ctvnews.ca/world/example-article">
       <br>
-      
+      <!--Submit button-->
       <input id="submit_link" class="link_summit_button" type="submit" value="Convert to audio - It's free!" onclick="showloading()"/>
     </form>
+    <!--Form end ^ ^ ^-->
 
+    <!-- Error message -->
     <div class="invalid_url_container">
-      <p class="invalid_url_heading">Oh no! The link that you entered is invalid!</p>
+      <p class="invalid_url_heading">Oh no! The link that you entered is an invalid CTV article!</p>
+      <!--Creates a bullet pointed list-->
       <ui class="invalid_url_list">
         <li>Ensure that the link you entered is from <a class="visible_link" href="https://www.ctvnews.ca/" target="_blank">CTV News</a>.</li>
         <li>Ensure that you did not leave the field blank when attempting to convert an article.</li>
       </ui>
+      <!--^ ^ ^-->
     </div>
+    <!-- Error message end ^ ^ ^-->
 
+    <!--Appears when the article is being converted into audio-->
     <div id="appears_on_load">
       <p class="welcome">Please be patient while we convert your article into audio. This can take up to a few minutes!</p>
+      <!--The loading circle-->
       <div class="loading_circle"></div>
-
     </div>
+    <!--^ ^ ^--> 
 
+    <!-- The container for the audio player-->
     <div class="audio_player" id="converted_audio">
         <h1 id="converted_audio" class="welcome audio_player">Your article has been converted into mp3!</h1>
-
+        <!--The audio player-->
         <audio controls class="audio_player" id="converted_audio">
+          <!--"audio_file_name" is defined in main.py-->
           <source src="{{ url_for('static', filename='audio/' + audio_file_name + '.mp3') }}" type="audio/mpeg">
+          <!--Shows this if audio players are not supported in the user's browser-->
           Sorry, your browser does not support the audio element.
         </audio>
+        <!-- ^ ^ ^ -->
     </div>
+    <!-- ^ ^ ^ -->
+
   </div>
+
   <footer>
     <p class="credits">@ 2020 <a class="hyperlink" href="https://github.com/DonaldKLee" target="_blank">Donald Lee</a></p>
   </footer>
+
   {% endblock %}
 
+  <!--Javascript-->
   <script>
-    //If the user presses enter when on the form
     var link_enter = document.getElementById("article_link");
     //Show the loading circle
     var loader = document.getElementById("appears_on_load");
     //The text and audio player that shows up
     var converted_audio_items = document.getElementById("converted_audio");
-
+    
+    //Checks if the user presses enter on the form
     link_enter.addEventListener("keyup", function(event) {
+      //If they did, click the submit button
       if (event.keyCode === 13) {
       event.preventDefault();
       document.getElementById("submit_link").click();
       }
     });
-
+    //When the submit button is clicked, run the following
     function showloading() {
+        //Displays the ID "appears_on_load"
         loader.style.display = "block";
+        //Hides the ID "converted_audio_items", which contains the audio player
         converted_audio_items.style.display = "none";
     }
 </script>

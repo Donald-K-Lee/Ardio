@@ -1,28 +1,28 @@
 body {
-  background: #F9F9F9;
   background: #FFFFFF;
-  margin: 0;
-  overflow-x:hidden;
-  height:100%;
+  margin: 0; /*Removes the margins on the website*/
+  overflow-x:hidden; /*Prevents the website from extending horizontally*/
+  min-height:100%;
   width:100%;
-  font-family: "Lucida Console", Courier, monospace;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif; /*Text font*/
 }
 
 header {
   width:100%;
-  background: #1F44C2;
+  background: #006EEA;
   height:60px;
-  padding:10px;
+  padding:10px; /*Adds some padding around the header*/
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); /*Adds a shadow below the header*/
+  overflow-x:hidden;
 }
 
 .header_logo {
   position:relative;
-  display:inline;
-  left:20px;
+  display:inline; /*Places the logo on the same line as the title*/
+  left:20px; /*Moves the logo 20px to the left*/
   width:60px;
   height:auto;
-  float:left;
+  float:left; /*Aligns the logo to the left*/
 }
 
 .Ardio_text {
@@ -32,21 +32,22 @@ header {
   left:30px;
   line-height:60px;
 }
+
 .hyperlink {
-  text-decoration:none;
-  color:white;
+  text-decoration:none; /*Removes the underline on the hyperlink*/
+  color:white; /*Text colour*/
 }
 
 .container {
   display: block;
-  margin:0 auto;
+  margin:0 auto; /*Centers the container*/
   position:relative;
-  text-align:center;
+  text-align:center; 
   min-height:80%;
 }
 .welcome {
   position:relative;
-  width:95%;
+  width:95%; /*Width of the text container*/
   margin:0 auto;
   font-size:35px;
   padding-top:50px;
@@ -61,12 +62,12 @@ form {
 .text_field_title {
   position:relative;
   font-size:30px;
-  font-weight:bold;
+  font-weight:bold; /*Bolds the text*/
 }
 .link_box_form {
-  width:50vw;
+  width:50vw; /*Width of box is 50% of the view width*/
   height:50px;
-  margin-top:15px;
+  margin-top:15px; /*Adds some spacing above the text box*/
 }
 
 .link_summit_button {
@@ -80,12 +81,14 @@ form {
   padding-left:30px;
   padding-right: 30px;
   font-size:18px;
-  border:none;
-  cursor:pointer;
-  transition: 0.5s;
+  border:none; /*Removes the default border on the button*/
+  outline:none; /*Removes the default outline on the button*/
+  cursor:pointer; /*Changes the design of the mouse pointer when it is on the button*/
+  transition: 0.5s; /*Makes it's transition 0.5 seconds*/
   margin-top:15px;
 }
-.link_summit_button:hover {
+
+.link_summit_button:hover { /*When the button is hovered, changes the colour of the button*/
   transition: 0.5s;
   background:#006EEA;
 }
@@ -116,16 +119,17 @@ form {
   display:block;
   top:20px;
   border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid #3498db;
+  border-radius: 50%; /*Makes it a circle*/
+  border-top: 16px solid #3498db; /*Adds the blue block on the loading button*/
   width: 160px;
   height: 160px;
-  animation: loading_animation 2s linear infinite;
+  animation: loading_animation 2s linear infinite; /*Runs an animation called "loading_animation" for 2 seconds infinitely*/
   margin:0 auto;
   margin-bottom:80px;
 }
 
-@keyframes loading_animation {
+@keyframes loading_animation { /*The animation that the loading wheel uses*/
+  /*Rotates the circle 360 degrees*/
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
@@ -144,6 +148,7 @@ footer {
   position:relative;
   width: 100%;
   height: 150px;
+  overflow-x:hidden;
 }
 
 .credits {
@@ -154,7 +159,7 @@ footer {
   top: 65%;
 }
 
-/*When the device's screen is below 1000px, make the URL box longer*/
+/*When the device's screen is below 1000px, make the URL box and .invalid_url_container wider*/
 @media only screen and (max-width: 1000px) {
   .link_box_form {
     width:90vw;
