@@ -1,13 +1,7 @@
 """
 By: Donald Lee
-Assignment: 7.0
-Class: Computer Programming 11
 Project name: Ardio
-Date: November 4th 2020 - Present
-
-Assignment 7.0:  Self-directed project 
-
-For the final project, you can make a program of your choice. You know how to do a lot now, but depending on what you want to tackle you may need to learn more. You can easily find tutorials on any topic, or you can ask me for suggestions.  
+Date: November 2020
 
 Refer to 
   - https://repl.it/talk/learn/Flask-Tutorial-Part-1-the-basics/26272
