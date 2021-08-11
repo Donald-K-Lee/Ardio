@@ -121,30 +121,10 @@ def main(URL, audio_file_name):
   language = 'en-ca'
 
   print("Converting text into audio...")
-  
   #Convert "the_article" into an mp3 file
   speech = gTTS(text = the_article, lang = language, slow = False)
-
   print("\nSaving text as an audio file...")
-
-  #Initalizes the following variables
-  saved = False
-  Attempts = 0
-
-  #If saved is false, or the number of attempts is 20, keep running.
-  while saved == False or Attempts == 20:
-      try:
-          print("Attempt " + str(Attempts))
-          Attempts += 1
-          #Saves the article as an mp3 file
-          speech.save("static/audio/" + str(audio_file_name) + ".mp3")
-          #Sets saved to True
-          saved = True
-      except:
-          pass
-
+  speech.save("static/audio/" + str(audio_file_name) + ".mp3")
   print("\nThe text has been saved as an audio file called " + str(audio_file_name) + ".mp3")
-
   #Returns the name of the mp3 file
   return str(audio_file_name)
-
